@@ -1,6 +1,6 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
-const express = require("express");
-const cors = require("cors");
+import { MongoClient } from "mongodb";
+import express from "express";
+import cors from "cors";
 
 const uri =
   "mongodb+srv://admin:admin123@twiller.rkcwy7f.mongodb.net/?retryWrites=true&w=majority&appName=twiller";
