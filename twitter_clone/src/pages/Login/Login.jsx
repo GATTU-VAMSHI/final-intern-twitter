@@ -49,7 +49,7 @@ const Login = () => {
                 type="email"
                 className="email"
                 placeholder="Email address"
-                onChange={(e) => seteamil(e.target.value)}
+                onChange={(e) => setemail(e.target.value)}
               />
               <input
                 type="password"

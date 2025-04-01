@@ -1,5 +1,5 @@
 import React from 'react'
-
+import '../pages.css'
 const Messages = () => {
   return (
     <div className="page">

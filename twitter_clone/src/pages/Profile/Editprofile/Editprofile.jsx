@@ -81,7 +81,7 @@ const Editprofile = ({ user, loggedinuser }) => {
       website,
       dob,
     };
-    fetch(`http://localhost:5000/userupdate/${user?.email}`, {
+    fetch(`https://twiller-finalproject.onrender.com/${user?.email}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
