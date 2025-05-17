@@ -44,8 +44,8 @@ export function UserAuthContextProvider( props ) {
         const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
             console.log("Auth", currentuser);
             setUser(currentuser);
+            // console.log(user)
         });
-
         return () => {
             unsubscribe();
         };
@@ -59,6 +59,7 @@ export function UserAuthContextProvider( props ) {
         </userAuthContext.Provider>
     );
 }
+
 // export default UserAuthContextProvider
 export function useUserAuth() {
     return useContext(userAuthContext);

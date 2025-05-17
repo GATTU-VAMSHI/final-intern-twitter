@@ -14,6 +14,7 @@ import More from "./pages/More/More";
 import Bookmark from "./pages/Bookmark/Bookmark";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import LanguageSelector from "./pages/Language/LanguageSelector";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
             <Route path="lists" element={<Lists />} />
             <Route path="profile" element={<Profile />} />
             <Route path="more" element={<More />} />
+            <Route path="language" element={<LanguageSelector/>} />
           </Route>
         </Routes>
       </UserAuthContextProvider>

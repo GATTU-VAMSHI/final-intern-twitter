@@ -5,17 +5,15 @@ const useLoggedinuser = () => {
   const { user } = useUserAuth();
   const email = user?.email;
   const [loggedinuser, setloggedinuser] = useState({});
-
   useEffect(() => {
-    fetch(`https://twiller-finalproject.onrender.com/loggedinuser?email=${email}`)
+    fetch(`${import.meta.env.VITE_BACKEND_API_URL}/loggedinuser?email=${email}`)
       .then((res) => res.json())
       .then((data) => {
         // console.log(data)
         setloggedinuser(data);
       });
-  }, [email, loggedinuser]);
+  }, [email]);
 
-  
   return [loggedinuser, setloggedinuser];
 
 };

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import Posts from "../Posts/Posts";
 import "./Mainprofile.css";
 import { useNavigate } from "react-router-dom";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CenterFocusWeakIcon from "@mui/icons-material/CenterFocusWeak";
 import LockResetIcon from "@mui/icons-material/LockReset";
@@ -10,8 +13,14 @@ import AddLinkIcon from "@mui/icons-material/AddLink";
 import Editprofile from "../Editprofile/Editprofile";
 import axios from "axios";
 import useLoggedinuser from "../../hooks/useLoggedinuser";
+import Avatarprofile from "../Avatarprofile/Avatarprofile";
+import { useTranslation } from "react-i18next";
 
 const Mainprofile = ({ user }) => {
+      const { t }=useTranslation();
+
+  const [anchorE1, setanchorE1] = useState(null);
+  const openmenu = Boolean(anchorE1);
   const navigate = useNavigate();
   const [isloading, setisloading] = useState(false);
   const [loggedinuser] = useLoggedinuser();
@@ -19,7 +28,7 @@ const Mainprofile = ({ user }) => {
   const [post, setpost] = useState([]);
 
   useEffect(() => {
-    fetch(`https://twiller-finalproject.onrender.com/userpost?email=${user?.email}`)
+    fetch(`${import.meta.env.VITE_BACKEND_API_URL}/userpost?email=${user?.email}`)
       .then((res) => res.json())
       .then((data) => {
         setpost(data);
@@ -46,7 +55,7 @@ const Mainprofile = ({ user }) => {
         };
         setisloading(false);
         if (url) {
-          fetch(`https://twiller-finalproject.onrender.com/userupdate/${user?.email}`, {
+          fetch(`${import.meta.env.VITE_BACKEND_API_URL}/userupdate/${user?.email}`, {
             method: "PATCH",
             headers: {
               "content-type": "application/json",
@@ -68,7 +77,7 @@ const Mainprofile = ({ user }) => {
   const handleuploadprofileimage = (e) => {
     setisloading(true);
     const image = e.target.files[0];
-    // console.log(image)
+    console.log(image);
     const formData = new FormData();
     formData.set("image", image);
     axios
@@ -78,7 +87,7 @@ const Mainprofile = ({ user }) => {
       )
       .then((res) => {
         const url = res.data.data.display_url;
-        // console.log(res.data.data.display_url);
+        console.log(res.data.data.display_url);
         const userprofileimage = {
           email: user?.email,
           profileImage: url,
@@ -86,7 +95,7 @@ const Mainprofile = ({ user }) => {
         setisloading(false);
 
         if (url) {
-          fetch(`https://twiller-finalproject.onrender.com/userupdate/${user?.email}`, {
+          fetch(`${import.meta.env.VITE_BACKEND_API_URL}/userupdate/${user?.email}`, {
             method: "PATCH",
             headers: {
               "content-type": "application/json",
@@ -131,6 +140,12 @@ const Mainprofile = ({ user }) => {
   //     photo: "https://example.com/posts/css.png",
   //   },
   // ];
+  const handleclick = (e) => {
+    setanchorE1(e.currentTarget);
+  };
+  const handleclose = () => {
+    setanchorE1(null);
+  };
   return (
     <div>
       <ArrowBackIcon className="arrow-icon" onClick={() => navigate("/")} />
@@ -144,8 +159,8 @@ const Mainprofile = ({ user }) => {
                   src={
                     loggedinuser[0]?.coverimage
                       ? loggedinuser[0].coverimage
-                        : user && user.photoURL
-                        //: "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+                      : user && user.photoURL
+                    //: "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
                   }
                   alt=""
                   className="coverImage"
@@ -159,7 +174,12 @@ const Mainprofile = ({ user }) => {
                         <CenterFocusWeakIcon className="photoIcon" />
                       )}
                     </label>
-                    <input type="file" id="image" className="imageInput" onChange={handleuploadcoverimage} />
+                    <input
+                      type="file"
+                      id="image"
+                      className="imageInput"
+                      onChange={handleuploadcoverimage}
+                    />
                   </div>
                 </div>
               </div>
@@ -169,27 +189,60 @@ const Mainprofile = ({ user }) => {
                     src={
                       loggedinuser[0]?.profileImage
                         ? loggedinuser[0].profileImage
-                          : user && user.photoURL
-                          // :"https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+                        : user && user.photoURL
+                      // :"https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
                     }
                     alt=""
                     className="avatar"
                   />
                   <div className="hoverAvatarImage">
                     <div className="imageIcon_tweetButton">
-                      <label htmlFor="profileImage" className="imageIcon">
+                      <label className="imageIcon">
                         {isloading ? (
                           <LockResetIcon className="photoIcon photoIconDisabled" />
                         ) : (
-                          <CenterFocusWeakIcon className="photoIcon" />
+                          <div>
+                            <IconButton
+                              size="small"
+                              sx={{ ml: 2 }}
+                              aria-controls={
+                                openmenu ? "profile-change" : undefined
+                              }
+                              aria-haspopup="true"
+                              aria-valuetext={openmenu ? "true" : undefined}
+                              onClick={handleclick}
+                            >
+                              <CenterFocusWeakIcon className="photoIcon" />
+                            </IconButton>
+                            <Menu
+                              id="profile-change"
+                              anchorEl={anchorE1}
+                              open={openmenu}
+                              onClick={handleclose}
+                              onClose={handleclose}
+                            >
+                              <MenuItem>
+                                <label htmlFor="profileImage">
+                                  <input
+                                    type="file"
+                                    id="profileImage"
+                                    className="imageInput"
+                                    onChange={handleuploadprofileimage}
+                                  />
+                                  {t("Select from device")}
+                                </label>
+                              </MenuItem>
+                              <MenuItem
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                }}
+                              >
+                                <Avatarprofile user={user} />
+                              </MenuItem>
+                            </Menu>
+                          </div>
                         )}
                       </label>
-                      <input
-                        type="file"
-                        id="profileImage"
-                        className="imageInput"
-                        onChange={handleuploadprofileimage}
-                      />
                     </div>
                   </div>
                 </div>
@@ -210,6 +263,22 @@ const Mainprofile = ({ user }) => {
                   ) : (
                     "User bio"
                   )}
+                  <div className="follow-section">
+                    <div className="follow-following">
+                      {loggedinuser[0]?.following ? (
+                        <p>{t("following")} {loggedinuser[0].following.length}</p>
+                      ) : (
+                        "following 0"
+                      )}
+                    </div>
+                    <div className="follow-followers">
+                      {loggedinuser[0]?.followers ? (
+                        <p>{t("followers")} {loggedinuser[0].followers.length}</p>
+                      ) : (
+                        "followers 0"
+                      )}
+                    </div>
+                  </div>
                   <div className="locationAndLink">
                     {loggedinuser[0]?.location ? (
                       <p className="suvInfo">
@@ -227,7 +296,7 @@ const Mainprofile = ({ user }) => {
                     )}
                   </div>
                 </div>
-                <h4 className="tweetsText">Tweets</h4>
+                <h4 className="tweetsText">{t("Tweets")}</h4>
                 <hr />
               </div>
               {post.map((p) => (

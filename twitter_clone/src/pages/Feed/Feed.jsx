@@ -2,11 +2,17 @@ import React, { useEffect, useState } from "react";
 import "./feed.css";
 import Posts from "./Posts/Posts";
 import Tweetbox from "./Tweetbox/Tweetbox";
+import useLoggedinuser from "../hooks/useLoggedinuser";
+import { useTranslation } from "react-i18next";
 
 const Feed = () => {
   const [post, setpost] = useState([]);
+  const [loggedinuser] = useLoggedinuser();
+  const { t }=useTranslation();
+
+  // console.log(loggedinuser[0]._id)
   useEffect(() => {
-    fetch("https://twiller-finalproject.onrender.com/post")
+    fetch(`${import.meta.env.VITE_BACKEND_API_URL}/post`)
       .then((res) => res.json())
       .then((data) => {
         setpost(data);
@@ -44,12 +50,13 @@ const Feed = () => {
   return (
     <div className="feed">
       <div className="feed__header">
-        <h2>Home</h2>
+        <h2>{t("Home")}</h2>
       </div>
       <Tweetbox />
-      {post.map((p) => (
-        <Posts key={p._id} p={p} />
-      ))}
+      {loggedinuser?.[0]?._id &&
+        post.map((p) => (
+          <Posts p={p} key={p._id} currentUserId={loggedinuser[0]._id} currentUserEmail={loggedinuser[0].email} />
+        ))}
     </div>
   );
 };

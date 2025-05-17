@@ -1,0 +1,94 @@
+.avatar-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .avatar-container h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #222;
+    margin-bottom: 1.5rem;
+  }
+  
+  .avatar-preview {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  
+  .avatar-preview img {
+    width: 180px;
+    border-radius: 12px;
+    border: 2px solid #e0e0e0;
+    transition: transform 0.2s ease;
+  }
+  
+  .avatar-preview img:hover {
+    transform: scale(1.05);
+  }
+  
+  .avatar-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .option-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .option-group label {
+    font-weight: bold;
+    margin-bottom: 0.6rem;
+    color: #444;
+  }
+  
+  .option-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .option-button {
+    padding: 0.6rem 1rem;
+    background-color: #f4f4f4;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .option-button:hover {
+    background-color: #e0f7ff;
+  }
+  
+  .option-button.active {
+    border-color: #00aaff;
+    background-color: #d0f4ff;
+    color: #0077aa;
+  }
+  
+  .save-button {
+    margin-top: 2rem;
+    padding: 0.75rem 1.5rem;
+    width: 100%;
+    font-size: 1rem;
+    background-color: #00aaff;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .save-button:hover {
+    background-color: #008fcc;
+  }
+  

@@ -24,9 +24,9 @@ const Signup = () => {
       const user = {
         username: username,
         name: name,
-        email: email,
+        email: email
       };
-      fetch("https://twiller-finalproject.onrender.com/register", {
+      fetch(`${import.meta.env.VITE_BACKEND_API_URL}/register`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -36,7 +36,7 @@ const Signup = () => {
         .then((res) => res.json())
         .then((data) => {
           if (data.acknowledged) {
-            console.log(data);
+            console.log("check",data);
             navigate("/");
           }
         });

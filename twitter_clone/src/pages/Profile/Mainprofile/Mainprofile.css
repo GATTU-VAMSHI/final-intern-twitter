@@ -16,6 +16,15 @@
     position: relative;
   }
 
+  .follow-section{
+    display: flex;
+    align-items: center;
+    color: var(--twitter-color);
+    opacity: 90%;
+  }
+  .follow-following{
+    margin-right: 10px;
+  }
   .hoverCoverImage {
     position: absolute;
     top: 0%;

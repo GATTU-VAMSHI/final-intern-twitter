@@ -5,19 +5,25 @@ import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternate
 import axios from "axios";
 import { useUserAuth } from "../../../context/UserAuthContext";
 import useLoggedinuser from "../../hooks/useLoggedinuser";
+import AudioUploader from "../../AudioUploader/AudioUploader";
+import { useTranslation } from "react-i18next";
 
 const Tweetbox = () => {
+  const { t }=useTranslation();
+
   const [post, setpost] = useState("");
   const [imageurl, setimageurl] = useState("");
   const [isloading, setisloading] = useState(false);
   const [name, setname] = useState("");
   const [username, setusername] = useState("");
+  // const [message,setMessage]=useState(null)
   const { user } = useUserAuth();
-  const [loggedinsuer] = useLoggedinuser();
+  const [loggedinuser] = useLoggedinuser();
   const email = user?.email;
-  const userprofilepic = loggedinsuer[0]?.profileImage
-    ? loggedinsuer[0].profileImage
+  const userprofilepic = loggedinuser[0]?.profileImage
+    ? loggedinuser[0].profileImage
     : user && user.photoURL;
+    
   const handleuploadimage = (e) => {
     setisloading(true);
     const image = e.target.files[0];
@@ -26,12 +32,12 @@ const Tweetbox = () => {
     formData.set("image", image);
     axios
       .post(
-        "https://api.imgbb.com/1/upload?key=746c757c9ee59a8b35381e9dc8049681",
+        import.meta.env.VITE_IMGBB_API,
         formData
       )
       .then((res) => {
         setimageurl(res.data.data.display_url);
-        // console.log(res.data.data.display_url);
+        console.log(res.data.data.display_url);
         setisloading(false);
       })
       .catch((e) => {
@@ -42,10 +48,10 @@ const Tweetbox = () => {
   const handletweet = (e) => {
     e.preventDefault();
     if (user?.providerData[0]?.providerId === "password") {
-      fetch(`https://twiller-finalproject.onrender.com/loggedinuser?email=${email}`)
+      fetch(`${import.meta.env.VITE_BACKEND_API_URL}/loggedinuser?email=${email}`)
         .then((res) => res.json())
         .then((data) => {
-          // console.log(data[0].name); 
+          console.log(data); 
           setname(data[0]?.name); 
           setusername(data[0]?.username); 
         });
@@ -66,7 +72,7 @@ const Tweetbox = () => {
       // console.log(userpost);
       setpost("");
       setimageurl("");
-      fetch("https://twiller-finalproject.onrender.com/post", {
+      fetch(`${import.meta.env.VITE_BACKEND_API_URL}/post`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -75,7 +81,7 @@ const Tweetbox = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+          console.log(data.message);
         });
     }
   };
@@ -85,13 +91,13 @@ const Tweetbox = () => {
       <form onSubmit={handletweet}>
         <div className="tweetBox__input">
           <Avatar src={
-              loggedinsuer[0]?.profileImage
-                ? loggedinsuer[0].profileImage
+              loggedinuser[0]?.profileImage
+                ? loggedinuser[0].profileImage
                 : user && user.photoURL
             }/>
           <input
             type="text"
-            placeholder="What's happening?"
+            placeholder={t("What's Happening?")}
             onChange={(e) => setpost(e.target.value)}
             value={post}
             required
@@ -100,7 +106,7 @@ const Tweetbox = () => {
         <div className="imageIcon_tweetButton">
           <label htmlFor="image" className="imageIcon">
             {isloading ? (
-              <p>Uploading Image</p>
+              <p>{t("Uploading Image")}</p>
             ) : (
               <p>
                 {imageurl ? (
@@ -113,9 +119,10 @@ const Tweetbox = () => {
           </label>
           <input type="file" id="image" className="imageInput" onChange={handleuploadimage}/>
           <Button className="tweetBox__tweetButton" type="submit">
-            Tweets
+          {t("Tweets")}
           </Button>
         </div>
+          <AudioUploader />
       </form>
     </div>
   );

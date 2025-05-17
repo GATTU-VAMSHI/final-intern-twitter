@@ -12,7 +12,8 @@ const Home = () => {
   //   displayName: "vamshi",
   //   email: "vamshi@gmail.com",
   // };
-  const handlelogout = async () => {
+
+  const handlelogout = async () => {    
     try {
       await logOut()
       navigate("/login");
@@ -20,11 +21,12 @@ const Home = () => {
       console.log(error.message);
     }
   };
+
   return (
     <div className="app">
       <Sidebar handlelogout={handlelogout} user={user} />
-      <Outlet />
-      <Widgets />
+      <Outlet/>
+      <Widgets/>
     </div>
   );
 }
