@@ -1,1 +1,0 @@
-# twitter-clone-intern-proj
